@@ -7,7 +7,13 @@ export async function GET() {
     console.log('AIRTABLE_BASE_ID exists:', !!process.env.AIRTABLE_BASE_ID);
     console.log('AIRTABLE_ACCESS_TOKEN exists:', !!process.env.AIRTABLE_ACCESS_TOKEN);
     
-    const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Sessions`;
+    // Log delle variabili d'ambiente (mascherati per sicurezza)
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    console.log('Base ID length:', baseId ? baseId.length : 0);
+    console.log('Base ID prefix:', baseId ? baseId.substring(0, 4) : 'none');
+    
+    const url = `https://api.airtable.com/v0/${baseId}/tblZp4F4JaRh6WHsF`;
+    console.log('Full URL:', url);
     console.log('Fetching from URL:', url);
 
     const response = await fetch(url, {
