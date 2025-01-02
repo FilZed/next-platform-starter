@@ -1,3 +1,4 @@
+```javascript
 import { NextResponse } from 'next/server';
 
 // GET: Recupera i dati da Airtable
@@ -58,3 +59,4 @@ export async function POST(request) {
     });
   }
 }
+```
