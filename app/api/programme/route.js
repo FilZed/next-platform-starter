@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
 
-// GET: Recupera i dati da Airtable
 export async function GET() {
   try {
     const baseId = process.env.AIRTABLE_BASE_ID;
-    // Prova con l'ID della vista invece dell'ID della tabella
-    const url = `https://api.airtable.com/v0/${baseId}/viwuMMcN4Wm5lAf53`;
+    const tableId = 'tblZp4F4JaRh6WHsF';  // ID corretto dalla tua URL
+    const url = `https://api.airtable.com/v0/${baseId}/${tableId}`;
     
-    console.log('Attempting to fetch from:', url);
+    console.log('Using Airtable API URL:', url);
     
     const response = await fetch(url, {
       headers: {
@@ -18,22 +17,21 @@ export async function GET() {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Airtable API error details:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText,
-        url: url.replace(baseId, 'BASE_ID') // Log sicuro dell'URL
-      });
-      throw new Error(`Airtable API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Airtable API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
     
     return NextResponse.json({ 
       success: true, 
-      data: data.records 
+      data: data.records,
+      _debug: {
+        baseId: baseId ? `...${baseId.slice(-4)}` : null,
+        hasToken: !!process.env.AIRTABLE_ACCESS_TOKEN
+      }
     });
   } catch (error) {
+    console.error('API Error:', error);
     return NextResponse.json(
       { 
         success: false, 
